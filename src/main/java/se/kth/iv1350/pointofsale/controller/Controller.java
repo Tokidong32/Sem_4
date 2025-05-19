@@ -6,6 +6,7 @@ import java.util.List;
 import se.kth.iv1350.pointofsale.DTO.*;
 import se.kth.iv1350.pointofsale.exceptions.CantReachDatabaseException;
 import se.kth.iv1350.pointofsale.exceptions.ConectionFailException;
+import se.kth.iv1350.pointofsale.exceptions.NoItemFoundException;
 import se.kth.iv1350.pointofsale.integration.*;
 import se.kth.iv1350.pointofsale.model.Payment;
 import se.kth.iv1350.pointofsale.model.Register;
@@ -58,8 +59,10 @@ public class Controller {
      * @return informationen av vad som skannats samt en totalkostnad och moms. om varan inte 
      *         fanns retuneras NULL.
      * @throws ConectionFailException om det inte gick att lägga till den scanade vara
+     * @throws NoItemFoundException om den sökata varan inte hittas i databasen
+     * 
      * */
-    public SaleDTO addToSale(int scanedId, int amount) throws CantReachDatabaseException{
+    public SaleDTO addToSale(int scanedId, int amount) throws NoItemFoundException, CantReachDatabaseException{
         try {
             ItemDTO currentItem = inventorySystem.lookUpItem(scanedId, amount);
             SaleDTO currentSaleInfo = currentSale.addItem(currentItem);
